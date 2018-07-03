@@ -3,13 +3,13 @@
 #include <string.h>
 #define MAX_EXPRESSION_LENGTH 10
 #define N 3
-#define SIZE_M 25
-
+#define SIZE_M 27
+#define MAX_SIZE_M 100
 //Constants:
 int count_x = 0;
 int count_y = 0;
 int count_z = 0;
-char STRING[] = "x*x+2*x*y+y*y+x*x+x*x+y*y";
+char STRING[] = "x*x+2*x*y+y*y+x*x+x*x+y*y=0";
 
 //Functions:
 int poisk(char* mass, char* yeah);
@@ -21,7 +21,8 @@ char* zamena_na_massiv(char* mass, int key_to_change, char* symbols);
 int num_chrs(char* str, char* chrs);
 char** separating(char* str, int* size_sep_str);
 void show(char* mass);
-void zamena_sep_str(char* mass, char* symbols);
+void zamena_sep_str(char** mass, char** symbols);
+char* skleika(char** mass);
 
 int main () {
     int i;
@@ -40,10 +41,13 @@ int main () {
     show(skob_ptr);
     int num_elt;
     char **sprt_str = separating(STRING, &num_elt);
-    printf("%s", sprt_str[0]);
-    sprt_str[0] = skob_ptr;
-    //zamena_sep_str(sprt_str[0], skob_ptr);
-    printf("%s", sprt_str[0]);
+    printf("1.%s\n", sprt_str[0]);
+    //sprt_str[0] = skob_ptr;
+    zamena_sep_str(&sprt_str[0], &skob_ptr);
+    printf("2.%s\n", sprt_str[0]);
+    char* legend = skleika(sprt_str);
+    printf("\n%d\n", strlen(legend));
+    puts(legend);
     return 0;
 }
 
@@ -176,23 +180,32 @@ char** separating(char* str, int* size_sep_str) {
             buff_cntr++;
         }
     }
-    //puts("start");
+    puts("start");
     for(i=0;i<sep_cntr;i++){
-        //printf("%d: %d |%s|\n", i, strlen(sprt_str[i]), sprt_str[i]);
+        printf("%d: %d |%s|\n", i, strlen(sprt_str[i]), sprt_str[i]);
     }
-    //puts("end");
+    puts("end");
     *size_sep_str = sep_cntr;
     return sprt_str;
 }
 
 void show(char* mass) {
-    puts("\n");
+    puts("");
     for(int i = 0; i < strlen(mass); ++i) {
             printf("%c", mass[i]);
         }
-    puts("\n");
+    puts("");
 }
 
-void zamena_sep_str(char* mass, char* symbols) {
-   mass = symbols;
+void zamena_sep_str(char** mass, char** symbols) {
+    *mass = *symbols;
+}
+
+char* skleika(char** mass) {
+    char* new_mass = mass[0];
+    printf("\nlittle massives in massiv: %d\n", strlen(&mass));
+    for(int i = 1; i < 25; ++i) {
+        new_mass = strncat(new_mass, mass[i], strlen(mass[i]));
+    }
+    return new_mass;
 }
